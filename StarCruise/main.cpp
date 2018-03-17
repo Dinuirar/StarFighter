@@ -1,27 +1,31 @@
+//#include "keyhandlers.h"
+#include "ship.h"
+
 #include <QApplication>
 #include <QGraphicsView>
+#include <QGraphicsPixmapItem>
+#include <QKeyEvent>
+#include <iostream>
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
+    QString graphicspath = "../graphics/",
+            backgroundname = "alfa-background.png",
+            shipname = "alfa-ship.png";
     QApplication a(argc, argv);
 
-    QGraphicsScene scene;
-    QGraphicsRectItem *rect = scene.addRect(QRect(0, 0, 100 , 100));
-    //QGraphicsItem *item = scene.itemAt(50, 50);
-    scene.addText("hello world!");
+    QGraphicsScene* scene = new QGraphicsScene();
+    scene->setBackgroundBrush( QImage( graphicspath + backgroundname )  );
 
-    QString filename = "../graphics/basic_asteroid.png";
-    QImage img_ast( filename );
-//    QGraphicsPixmapItem* item = new QGraphicsPixmapItem(QPixmap::fromImage(img_ast));
-    //QGraphicsPixmapItem* item = new QGraphicsPixmapItem(QPixmap::fromImage(img_ast));
+    ship* item = new ship( QPixmap::fromImage( QImage ( graphicspath + shipname ) ) );
+    item->setScale(0.3);
+    item->setFocus();
+    scene->addItem(item);
 
-    // item->setScale(0.5);
-    //scene->addItem(item);
-
-    QGraphicsView view(&scene);
+    QGraphicsView view(scene);
     view.setWindowTitle(QT_TRANSLATE_NOOP(QGraphicsView, "StarCruise"));
-    view.resize(400, 300);
+    view.resize(600, 600);
     view.show();
 
+    std::cout << "xd\n";
     return a.exec();
 }
