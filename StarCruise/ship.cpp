@@ -3,36 +3,51 @@
 #include <cmath>
 
 ship::ship() {
-    a = 0;
-    b = 0;
-    ang = 0;
-    setFlag(ItemIsFocusable);
 }
 
-ship::ship(QPixmap pixitem) {
-    a = 0;
-    b = 0;
-    ang = 0;
+ship::ship(QString MODEL, int ID,
+           qreal X, qreal Y, qreal ANGLE,
+           qreal LINEAR_SPEED, qreal ANGULAR_SPEED,
+           int HULL, int SHIELDS, int ENERGY)
+    : CInertion(X, Y, ANGLE, LINEAR_SPEED, ANGULAR_SPEED),
+      id(ID), modelName(MODEL),
+      energy(ENERGY), shields (SHIELDS), hull(HULL) {
+    QImage tmp(modelName);
+    setPixmap( QPixmap::fromImage( tmp ) );
+    int centerW = tmp.width()/2,
+        centerH = tmp.height()/2;
+    setTransformOriginPoint( centerW, centerH );
     setFlag(ItemIsFocusable);
-    //setFlag(ItemIsMovable);
-    setPixmap(pixitem);
 }
 
 void ship::keyPressEvent(QKeyEvent *event) {
-    qreal step = 0.1;
-    qreal radstep = 0.1;
-    qreal dx = step * std::cos( 6.28/4 - ang * 0.01744 );
-    qreal dy = step * std::sin( 6.28/4 - ang * 0.01744 );
-    if( event->key() == Qt::Key_Down ) {
-        setPos( a += dy, b += dx );
+    if (id == 1){
+        if( event->key() == Qt::Key_S ) {
+            changeLinearSpeed( -0.1 );
+        }
+        if( event->key() == Qt::Key_W ) {
+            changeLinearSpeed( 0.1 );
+        }
+        if( event->key() == Qt::Key_D ) {
+            changeAngularSpeed( 0.1 );
+        }
+        if( event->key() == Qt::Key_A ) {
+            changeAngularSpeed( -0.1 );
+        }
     }
-    if( event->key() == Qt::Key_Up ) {
-        setPos( a -= dx, b -= dy );
-    }
-    if( event->key() == Qt::Key_Right ) {
-        setRotation(ang+=radstep);
-    }
-    if( event->key() == Qt::Key_Left ) {
-        setRotation(ang-=radstep);
+
+    if (id == 2){
+        if( event->key() == Qt::Key_Down ) {
+            changeLinearSpeed( -0.1 );
+        }
+        if( event->key() == Qt::Key_Up ) {
+            changeLinearSpeed( 0.1 );
+        }
+        if( event->key() == Qt::Key_Right ) {
+            changeAngularSpeed( 0.1 );
+        }
+        if( event->key() == Qt::Key_Left ) {
+            changeAngularSpeed( -0.1 );
+        }
     }
 }
