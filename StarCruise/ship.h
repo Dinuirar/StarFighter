@@ -3,8 +3,10 @@
 
 #include "common.h"
 #include "cinertion.h"
+#include "cweapons.h"
 
 #include <QGraphicsPixmapItem>
+#include <QGraphicsScene>
 #include <QKeyEvent>
 
 // parametry statkow:
@@ -15,23 +17,34 @@
 
 // grabKeyboard()
 
-class ship : public CInertion {
+class CShip : public CInertion {
 public:
-    ship();
-    ship(QString MODEL, int ID,
+    CShip();
+    CShip(QString MODEL, weaponID WEAPONID, int ID,
          qreal X, qreal Y, qreal ANGLE,
-         qreal LINEAR_SPEED = 0, qreal ANGULAR_SPEED = 0,
+         qreal LINEAR_ACC = 0, qreal ANGULAR_ACC = 0,
          int HULL = 100, int SHIELDS = 100, int ENERGY = 100);
-    void keyPressEvent(QKeyEvent *event);
-    shipClass getType(); // <<<<<<<<<<<<<<<<<<<<<< TODO
-    bool takeAHit(int, attackType); // <<<<<<<<<<<<<<<<<<<<<< TODO
-protected:
+    shipClass getType();
+    weaponID getWeaponType();
+    bool takeAHit(int, weaponID); // <<<<<<<<<<<<<<<<<<<<<< TODO
+    void changeAngularSpeed(qreal val);
+    void changeLinearSpeed(qreal val);
+    void attack();
+    lineOfSight isInLineOfSight();
     int id; // id statku
-    int energy, shields, hull;
+    QGraphicsScene* map;
+protected:
+    int dmg, special_dmg;
     QString modelName;
-    //virtual void move(Qt::Key); // <<<<<<<<<<<<<<<<<<<<<< TODO
-    //virtual void attack(int); // <<<<<<<<<<<<<<<<<<<<<< TODO
-    //virtual void specialAttack(int); // <<<<<<<<<<<<<<<<<<<<<< TODO
+    shipClass shipType;
+    int energy, shields, hull;
+    qreal linear_acceleration,
+          radial_acceleration;
+    weaponID we_id;
+private:
+    void update();
+    int centerW, centerH;
+    int counter;
 };
 
 #endif // SHIP_H

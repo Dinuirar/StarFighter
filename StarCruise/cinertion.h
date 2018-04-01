@@ -1,6 +1,7 @@
 #ifndef CINERTION_H
 #define CINERTION_H
 
+#include "common.h"
 #include <QPointF>
 #include <QTimer>
 #include <QObject>
@@ -11,15 +12,16 @@ class CInertion : public QObject, public QGraphicsPixmapItem {
 public:
     CInertion();
     CInertion(qreal X, qreal Y, qreal ANGLE,
-              qreal LINEAR_SPEED, qreal ANGULAR_SPEED);
+              qreal LINEAR_SPEED = 0, qreal ANGULAR_SPEED = 0);
     void changeLinearSpeed(qreal value);
+    void changeLinearSpeed(QPointF DELTA_LINEAR_SPEED);
     void changeAngularSpeed(qreal value);
-    void timerEvent(QTimerEvent *);
 public slots:
     void update();
 protected:
     QPointF position;
     qreal angle;
+    QPointF linear_speed2;
     qreal linear_speed,
           angular_speed;
 };

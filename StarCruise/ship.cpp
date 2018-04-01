@@ -2,52 +2,78 @@
 #include <iostream>
 #include <cmath>
 
-ship::ship() {
+CShip::CShip() {
 }
 
-ship::ship(QString MODEL, int ID,
+void CShip::update() {
+    std::cout << "update " << counter << "\n";
+    counter++;
+    //    if ( counter%10 ){
+    energy++;
+    //        counter = 0;
+    //    }
+}
+
+CShip::CShip(QString MODEL, weaponID WEAPONID, int ID,
            qreal X, qreal Y, qreal ANGLE,
-           qreal LINEAR_SPEED, qreal ANGULAR_SPEED,
+           qreal LINEAR_ACC, qreal ANGULAR_ACC,
            int HULL, int SHIELDS, int ENERGY)
-    : CInertion(X, Y, ANGLE, LINEAR_SPEED, ANGULAR_SPEED),
-      id(ID), modelName(MODEL),
-      energy(ENERGY), shields (SHIELDS), hull(HULL) {
+    : CInertion(X, Y, ANGLE), id(ID), modelName(MODEL),
+      linear_acceleration(LINEAR_ACC), radial_acceleration(ANGULAR_ACC),
+      energy(ENERGY), shields (SHIELDS), hull(HULL), we_id(WEAPONID) {
     QImage tmp(modelName);
     setPixmap( QPixmap::fromImage( tmp ) );
-    int centerW = tmp.width()/2,
-        centerH = tmp.height()/2;
+    centerW = tmp.width()/2;
+    centerH = tmp.height()/2;
+    setZValue(1);
     setTransformOriginPoint( centerW, centerH );
     setFlag(ItemIsFocusable);
+    QTimer* timerShip = new QTimer(this);
+    connect( timerShip, SIGNAL( timeout() ), this, SLOT( update() ) );
+    timerShip->start(dt);
 }
 
-void ship::keyPressEvent(QKeyEvent *event) {
-    if (id == 1){
-        if( event->key() == Qt::Key_S ) {
-            changeLinearSpeed( -0.1 );
-        }
-        if( event->key() == Qt::Key_W ) {
-            changeLinearSpeed( 0.1 );
-        }
-        if( event->key() == Qt::Key_D ) {
-            changeAngularSpeed( 0.1 );
-        }
-        if( event->key() == Qt::Key_A ) {
-            changeAngularSpeed( -0.1 );
-        }
-    }
+shipClass CShip::getType() {
+    return shipType;
+}
 
-    if (id == 2){
-        if( event->key() == Qt::Key_Down ) {
-            changeLinearSpeed( -0.1 );
-        }
-        if( event->key() == Qt::Key_Up ) {
-            changeLinearSpeed( 0.1 );
-        }
-        if( event->key() == Qt::Key_Right ) {
-            changeAngularSpeed( 0.1 );
-        }
-        if( event->key() == Qt::Key_Left ) {
-            changeAngularSpeed( -0.1 );
-        }
+weaponID CShip::getWeaponType() {
+    return we_id;
+}
+
+void CShip::changeAngularSpeed(qreal val) {
+    CInertion::changeAngularSpeed(val);
+}
+
+void CShip::changeLinearSpeed(qreal val) {
+    CInertion::changeLinearSpeed(val);
+}
+
+void CShip::attack() {
+    std::cout << "energy: " << energy << "\n";
+    qreal a = position.x() + centerW;
+    qreal b = position.y() + centerH;
+    if ( getWeaponType() == LASER ) {
+        CLaser *engage = new CLaser(a, b, angle, -1);
+        if( energy - engage->energyCost < 0 ) return;
+        energy -= engage->energyCost;
+        map->addItem(engage);
     }
+    else if ( getWeaponType() == PLASMA ) {
+        CPlasma *engage = new CPlasma(a, b, angle, -1);
+        if( energy - engage->energyCost < 0 ) return;
+        energy -= engage->energyCost;
+        map->addItem(engage);
+    }
+    else if ( getWeaponType() == KINETIC ) {
+        CKinetic *engage = new CKinetic(a, b, angle, -1);
+        if( energy - engage->energyCost < 0 ) return;
+        energy -= engage->energyCost;
+        map->addItem(engage);
+    }
+}
+
+lineOfSight CShip::isInLineOfSight() {
+    // call checkLineOfSight() "attack"
+    return NOTHING;
 }

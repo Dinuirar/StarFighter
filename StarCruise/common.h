@@ -1,24 +1,27 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-enum shipClass {
-    INTERCEPTOR, BERSERK, TANK
-};
+#include <QString>
 
-enum attackType {
-    LASER, PLASMA, KINETIC
-};
+const int dt = 1; // timestep in [ms]
+const QString graphicspath = "../graphics/";
 
-enum difficulty {
-    EASY, MEDIUM, HARD
-};
+const int laserEnergyCost = 10;
+const int plasmaEnergyCost = 20;
+const int kineticEnergyCost = 5;
+const int laserSpeed = 3;
+const int plasmaSpeed = 5;
+const int kineticSpeed = 1;
+const QString laserName = "laser.png";
+const QString plasmaName = "plasma.png";
+const QString kineticName = "kinetic.png";
 
-enum gameMode {
-    ONE_PLAYER, TWO_PLAYERS
-};
+enum difficulty { EASY, MEDIUM, HARD };
+enum gameMode { ONE_PLAYER, TWO_PLAYERS };
+enum aiAlgorithm { SIMPLE, ADVANCED };
 
-enum aiAlgorithm {
-    SIMPLE, ADVANCED
-};
+enum shipClass { INTERCEPTOR, BERSERK, TANK };
+enum weaponID { PLASMA, LASER, KINETIC };
+enum lineOfSight { NOTHING, SHIP, ASTEROID };
 
 #endif // COMMON_H

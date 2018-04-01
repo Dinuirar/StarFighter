@@ -7,11 +7,10 @@
 #include <QGraphicsPixmapItem>
 #include <QKeyEvent>
 
-class Asteroid : public CInertion {
+class CAsteroid : public CInertion {
 public:
-    Asteroid();
-    explicit Asteroid(QString arg, int X, int Y);
-    Asteroid(QString MODEL, int ID,
+    CAsteroid();
+    CAsteroid(QString MODEL, int ID,
              qreal X, qreal Y, qreal ANGLE,
              qreal LINEAR_SPEED = 0, qreal ANGULAR_SPEED = 0,
              int HP = 100);
@@ -22,19 +21,19 @@ protected:
     QString modelName;
 };
 
-class SmallAsteroid : public Asteroid {
+class SmallAsteroid : public CAsteroid {
 public:
     SmallAsteroid();
     bool takeAHit(int);
 };
 
-class MediumAsteroid : Asteroid {
+class MediumAsteroid : CAsteroid {
 public:
     MediumAsteroid();
     bool takeAHit(int);
 };
 
-class BigAsteroid : Asteroid {
+class BigAsteroid : CAsteroid {
 public:
     BigAsteroid();
     bool takeAHit(int);
