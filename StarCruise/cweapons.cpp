@@ -4,11 +4,13 @@
 /////////////////////////////////////////////////////////////
 CWeapons::CWeapons() { }
 
-CWeapons::CWeapons(QString MODELNAME, int ENERGYCOST,
+CWeapons::CWeapons(QString MODELNAME,
+                   int ENERGYCOST, int DELAY,
                    qreal X, qreal Y, qreal ANGLE,
                    qreal LINEAR_SPEED)
     : CInertion(X, Y, ANGLE, LINEAR_SPEED, 0),
-      modelName(MODELNAME), energyCost(ENERGYCOST) {
+      modelName(MODELNAME), EnergyCost(ENERGYCOST),
+      Delay(DELAY) {
     QImage tmp(modelName);
     setPixmap( QPixmap::fromImage( tmp ) );
     //setTransformOriginPoint( tmp.width()/2, 0 );
@@ -22,7 +24,7 @@ CPlasma::CPlasma(qreal X, qreal Y, qreal ANGLE,
                  qreal LINEAR_SPEED)
     : modelName(graphicspath + plasmaName),
       CWeapons(graphicspath + plasmaName, plasmaEnergyCost,
-               X, Y, ANGLE, LINEAR_SPEED) { }
+               plasmaDelay, X, Y, ANGLE, LINEAR_SPEED) { }
 
 /////////////////////////////////////////////////////////////
 CLaser::CLaser() {}
@@ -31,7 +33,7 @@ CLaser::CLaser(qreal X, qreal Y, qreal ANGLE,
                  qreal LINEAR_SPEED)
     : modelName(graphicspath + laserName),
       CWeapons(graphicspath + laserName, laserEnergyCost,
-               X, Y, ANGLE, LINEAR_SPEED) { }
+               laserDelay, X, Y, ANGLE, LINEAR_SPEED) { }
 
 /////////////////////////////////////////////////////////////
 CKinetic::CKinetic() {}
@@ -40,6 +42,6 @@ CKinetic::CKinetic(qreal X, qreal Y, qreal ANGLE,
                  qreal LINEAR_SPEED)
     : modelName(graphicspath + kineticName),
       CWeapons(graphicspath + kineticName, kineticEnergyCost,
-               X, Y, ANGLE, LINEAR_SPEED) { }
+               kineticDelay, X, Y, ANGLE, LINEAR_SPEED) { }
 
 /////////////////////////////////////////////////////////////

@@ -8,12 +8,15 @@
 class CWeapons : public CInertion {
 private:
     QString modelName;
+    int EnergyCost;
+    int Delay;
 public:
     CWeapons();
-    CWeapons(QString MODELNAME, int ENERGYCOST,
+    CWeapons(QString MODELNAME, int ENERGYCOST, int DELAY,
              qreal X, qreal Y, qreal ANGLE,
              qreal LINEAR_SPEED = -1);
-    int energyCost;
+    int energyCost() { return EnergyCost; }
+    int delay() {return Delay; }
 };
 
 /////////////////////////////////////////////////////////////

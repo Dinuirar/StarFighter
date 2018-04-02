@@ -8,23 +8,27 @@
 #include <iostream>
 
 class CMenu : public QGraphicsScene {
+    Q_OBJECT
 public:
     CMenu();
-    CShip * player;
-    int counter;
+    CMenu(qreal X, qreal Y, qreal WIDTH, qreal HEIGHT);
     bool startNewGame();
     bool displayInstruction();
     void setGameMode();
     void setDifficulty();
     void setAiAlgorithm();
-    void update();
-    void timerEvent(QTimerEvent *);
     void keyPressEvent(QKeyEvent *event);
-private:
+    CShip * player;
+    int getCounter() { return counter; }
+public slots:
+    virtual void update();
+protected:
+    int counter;
     difficulty level;
     gameMode mode;
     aiAlgorithm ai;
     QString instructionFileName;
+    QGraphicsSimpleTextItem* title;
 };
 
 #endif // CMENU_H

@@ -18,11 +18,12 @@
 // grabKeyboard()
 
 class CShip : public CInertion {
+    Q_OBJECT
 public:
     CShip();
-    CShip(QString MODEL, weaponID WEAPONID, int ID,
-         qreal X, qreal Y, qreal ANGLE,
-         qreal LINEAR_ACC = 0, qreal ANGULAR_ACC = 0,
+    CShip(QString MODEL, weaponID WEAPONID = LASER, int ID = 0,
+         qreal X = 0, qreal Y = 0, qreal ANGLE = 0,
+         qreal LINEAR_ACC = 0.1, qreal ANGULAR_ACC = 0.1,
          int HULL = 100, int SHIELDS = 100, int ENERGY = 100);
     shipClass getType();
     weaponID getWeaponType();
@@ -33,6 +34,8 @@ public:
     lineOfSight isInLineOfSight();
     int id; // id statku
     QGraphicsScene* map;
+public slots:
+    void updateShip();
 protected:
     int dmg, special_dmg;
     QString modelName;
@@ -41,10 +44,10 @@ protected:
     qreal linear_acceleration,
           radial_acceleration;
     weaponID we_id;
-private:
     void update();
+private:
     int centerW, centerH;
-    int counter;
+    int counterShip;
 };
 
 #endif // SHIP_H

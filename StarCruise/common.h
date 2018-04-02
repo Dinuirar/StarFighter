@@ -3,9 +3,18 @@
 
 #include <QString>
 
-const int dt = 1; // timestep in [ms]
+const int dt = 10; // timestep in [ms]
 const QString graphicspath = "../graphics/";
 
+const qreal windowWidth = 900.,
+          windowHeight = 500.;
+const qreal normalAcceleration = 0.1;
+const qreal speedMaxAngular = 0.2;
+const qreal speedMaxLinearFrwd = 0.3;
+const qreal speedMaxLinearBkwd = 0.;
+const int laserDelay = 60; // [ms]
+const int plasmaDelay = 80; // [ms]
+const int kineticDelay = 30; // [ms]
 const int laserEnergyCost = 10;
 const int plasmaEnergyCost = 20;
 const int kineticEnergyCost = 5;

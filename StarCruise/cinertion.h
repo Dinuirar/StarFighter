@@ -17,13 +17,14 @@ public:
     void changeLinearSpeed(QPointF DELTA_LINEAR_SPEED);
     void changeAngularSpeed(qreal value);
 public slots:
-    void update();
+    virtual void update();
 protected:
     QPointF position;
     qreal angle;
     QPointF linear_speed2;
     qreal linear_speed,
           angular_speed;
+    int inertionCounter;
 };
 
 #endif // CINERTION_H
