@@ -2,10 +2,12 @@
 #define CMENU_H
 
 #include "common.h"
-#include "ship.h"
+#include "cship.h"
 #include <QGraphicsScene>
 #include <QTimer>
 #include <iostream>
+
+#include "common.h"
 
 class CMenu : public QGraphicsScene {
     Q_OBJECT
@@ -14,19 +16,19 @@ public:
     CMenu(qreal X, qreal Y, qreal WIDTH, qreal HEIGHT);
     bool startNewGame();
     bool displayInstruction();
-    void setGameMode();
-    void setDifficulty();
-    void setAiAlgorithm();
+    void setGameMode(eGameMode MODE);
+    void setDifficulty(eDifficulty DIFF);
+    void setAiAlgorithm(eAiAlgorithm ALGORITHM);
+    int getCounter() { return counter; }
     void keyPressEvent(QKeyEvent *event);
     CShip * player;
-    int getCounter() { return counter; }
 public slots:
     virtual void update();
 protected:
     int counter;
-    difficulty level;
-    gameMode mode;
-    aiAlgorithm ai;
+    eDifficulty level;
+    eGameMode mode;
+    eAiAlgorithm ai;
     QString instructionFileName;
     QGraphicsSimpleTextItem* title;
 };
