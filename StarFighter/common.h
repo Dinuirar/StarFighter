@@ -21,6 +21,9 @@ enum EDifficulty { EASY, MEDIUM, HARD };
 
 enum EId { PLAYER, NPC };
 
+qreal deg2rad( qreal deg );
+qreal rad2deg( qreal rad );
+
 class CSettings {
 public:
     EDifficulty FDifficulty;

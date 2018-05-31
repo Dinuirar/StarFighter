@@ -18,7 +18,7 @@ void CAsteroid::setModel(QString arg) {
 }
 
 bool CAsteroid::takeAHit(int dmg) {
-
+    return true;
 }
 
 void CAsteroid::update() {

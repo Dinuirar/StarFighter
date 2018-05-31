@@ -23,7 +23,9 @@ public:
     QPointF getLinearSpeed() { return linear_speed; }
     QPointF getPosition() { return position; }
     qreal getAngle() { return angle; }
+    void setSpace(CSpace* _s) { FSpace = _s; }
     CSpace* getSpace() { return FSpace; }
+    int getLifetime() { return cnt_lifetime; }
     void update();
 protected:
     QString modelName;

@@ -55,21 +55,26 @@ void CShip::accelerateLinear(bool isDecceleration) {
 }
 
 void CShip::attack() {
+    if( !this->getSpace() )
+        return;
     GGraphics* bullet_g;
     EWeaponID bullet_type = this->getWeaponType();
     CBullet* bullet = new CBullet(this->getPosition(), this->getAngle(),
                      bullet_type);
     if ( bullet_type == LASER ) {
-        bullet_g = new GGraphics( "..\graphics\laser.png", bullet );
+        bullet_g = new GGraphics( "../graphics/laser.png", bullet );
     }
     else if ( bullet_type == PLASMA  ) {
-        bullet_g = new GGraphics("..\graphics\plasma.png", bullet);
+        bullet_g = new GGraphics("../graphics/plasma.png", bullet);
     }
     else if ( bullet_type == KINETIC ) {
-        bullet_g = new GGraphics("..\graphics\kinetic.png", bullet);
+        bullet_g = new GGraphics("../graphics/kinetic.png", bullet);
     }
     else
         return;
+    if( !bullet_g )
+        return;
+    bullet_g->setScale(0.2);
     this->getSpace()->addObject(bullet, bullet_g);
 }
 

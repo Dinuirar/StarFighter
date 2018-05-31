@@ -6,7 +6,10 @@ CBullet::CBullet() {
 CBullet::CBullet(QPointF POSITION, qreal ANGLE,
                  EWeaponID TYPE, qreal RANGE)
     : CObject(POSITION.x(), POSITION.y(), ANGLE), range(RANGE) {
-    qreal lin = 10;
-    this->setLinearSpeed( QPointF( lin*sin(ANGLE), lin*cos(ANGLE) ) );
+    this->setMaxLife( 10000 );
+    this->setDamage( 10 );
+    qreal lin_speed = 60;
+    ANGLE = 3.14/2 - deg2rad(ANGLE);
+    this->setLinearSpeed( QPointF( lin_speed*cos( ANGLE ), -lin_speed*sin( ANGLE ) ) );
 }
 

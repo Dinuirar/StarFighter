@@ -1,4 +1,5 @@
 #include "cspace.h"
+#include "cbullet.h"
 
 CSpace::CSpace() {
     setSceneRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -31,6 +32,18 @@ void CSpace::addObject(CObject * _obj, GGraphics * _graphic) {
 
 void CSpace::updateObjs() {
     for (int i = 0; i < FListObj.size(); i++) {
-        FListObj[i]->update();
+//        FListObj[i]->update();
+        if( dynamic_cast<CBullet*>( FListObj[i] ) &&
+            dynamic_cast<CBullet*>( FListObj[i] )->getMaxLife() < FListObj[i]->getLifetime() ) { // cast object on bullet, check its lifetime
+            //deleteObject(i);
+            //const std::deque<CObject*>::iterator _iposition = FListObj.at(i);
+            //FListObj.erase( _iposition );
+            //delete FListObj[i];
+            //delete FListGraphics[i];
+            // FListObj.at(i);
+        }
+        else {
+            FListObj[i]->update();
+        }
     }
 }

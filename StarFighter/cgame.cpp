@@ -20,6 +20,7 @@ CGame::CGame() {
 
     // add player's ship
     player = new CShip( PLASMA, PLAYER );
+    player->setSpace( space );
     player->setPosition( QPointF(100, 100) );
 
     GGraphics* player_g = new GGraphics("../graphics/ship-viper2.png", player);
@@ -105,6 +106,7 @@ void CGame::keyPressEvent(QKeyEvent * event) {
         }
         else if ( event->key() == Qt::Key_Shift ) {
             //TODO: add bullet
+            ship->attack();
         }
     }
 }

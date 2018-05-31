@@ -9,6 +9,7 @@ CObject::CObject(qreal X, qreal Y, qreal ANGLE,
       linear_speed( QPointF(LINEAR_SPEEDX, LINEAR_SPEEDY) ),
       angular_speed(ANGULAR_SPEED),
       cnt_lifetime(0) {
+    FSpace = NULL;
 }
 
 qreal CObject::calcDistance(CObject * _obj) {
@@ -32,6 +33,7 @@ void CObject::update() {
     position.rx() += dt * linear_speed.x();
     position.ry() += dt * linear_speed.y();
     angle += dt * angular_speed;
+    cnt_lifetime++;
 }
 
 // TODO: error control
