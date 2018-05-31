@@ -5,6 +5,8 @@
 #include <QString>
 #include <QGraphicsPixmapItem>
 
+class CObject;
+
 class GGraphics : public QGraphicsPixmapItem {
 private:
     CObject* fobject;

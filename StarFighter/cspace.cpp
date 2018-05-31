@@ -13,3 +13,24 @@ CSpace::CSpace() {
     coordinates->setZValue(2);
     addItem(coordinates);
 }
+
+std::deque<CObject*> CSpace::getObjInRange(CObject *_obj, qreal _range) {
+    std::deque<CObject*> objInRange;
+    for (int i = 0; i < FListObj.size(); i++) {
+        if ( _obj->calcDistance(FListObj[i]) <= _range )
+            objInRange.push_back(FListObj[i]);
+    }
+    return objInRange;
+}
+
+void CSpace::addObject(CObject * _obj, GGraphics * _graphic) {
+    addItem(_graphic);
+    FListObj.push_back(_obj);
+    FListGraphics.push_back(_graphic);
+}
+
+void CSpace::updateObjs() {
+    for (int i = 0; i < FListObj.size(); i++) {
+        FListObj[i]->update();
+    }
+}

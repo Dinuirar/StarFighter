@@ -1,4 +1,5 @@
 #include "cship.h"
+#include "ggraphics.h"
 #include <cmath>
 
 CShip::CShip() {
@@ -15,44 +16,65 @@ CShip::CShip( EWeaponID WEAPONID, EId ID,
 
 void CShip::accelerateAngular(bool plus) {
     if(plus) {
-        if (angular_speed > MAX_ANG_SPEED)
-            if (angular_speed + dt > MAX_ANG_SPEED)
-                return;
+//        if (angular_speed > MAX_ANG_SPEED)
+//            if (angular_speed + dt > MAX_ANG_SPEED)
+//                return;
         angular_speed += dt * angular_acceleration;
     }
     else {
-        if (angular_speed > MAX_ANG_SPEED)
-            if (angular_speed - dt > MAX_ANG_SPEED)
-                return;
+//        if (angular_speed > MAX_ANG_SPEED)
+//            if (angular_speed - dt > MAX_ANG_SPEED)
+//                return;
         angular_speed -= dt * angular_acceleration;
     }
 }
 
 void CShip::accelerateLinear(bool isDecceleration) {
     if ( !isDecceleration ) {
-        if( linear_speed.x()*linear_speed.x() + linear_speed.y()*linear_speed.y() > MAX_LIN_SPEED_SQR ) {
-            if (    (linear_speed.ry() - linear_acceleration * dt * cos( angle * 0.01744 )) *  (linear_speed.ry() - linear_acceleration * dt * cos( angle * 0.01744 ))
-                    +
-                    (linear_speed.rx() + linear_acceleration * dt * sin( angle * 0.01744 )) * (linear_speed.rx() + linear_acceleration * dt * sin( angle * 0.01744 )) > MAX_LIN_SPEED_SQR
-                    )
-                return;
-        }
+//        if( linear_speed.x()*linear_speed.x() + linear_speed.y()*linear_speed.y() > MAX_LIN_SPEED_SQR ) {
+//            if (    (linear_speed.ry() - linear_acceleration * dt * cos( angle * 0.01744 )) *  (linear_speed.ry() - linear_acceleration * dt * cos( angle * 0.01744 ))
+//                    +
+//                    (linear_speed.rx() + linear_acceleration * dt * sin( angle * 0.01744 )) * (linear_speed.rx() + linear_acceleration * dt * sin( angle * 0.01744 )) > MAX_LIN_SPEED_SQR
+//                    )
+//                return;
+//        }
         linear_speed.ry() -= linear_acceleration * dt * cos( angle * 0.01744 );
         linear_speed.rx() += linear_acceleration * dt * sin( angle * 0.01744 );
     }
     else {
-        if( linear_speed.x()*linear_speed.x() + linear_speed.y()*linear_speed.y() > MAX_LIN_SPEED_SQR ) {
-            if (    (linear_speed.ry() + linear_acceleration * dt * cos( angle * 0.01744 )) *  (linear_speed.ry() + linear_acceleration * dt * cos( angle * 0.01744 ))
-                    +
-                    (linear_speed.rx() - linear_acceleration * dt * sin( angle * 0.01744 )) * (linear_speed.rx() - linear_acceleration * dt * sin( angle * 0.01744 )) > MAX_LIN_SPEED_SQR
-                    )
-                return;
-        }
+//        if( linear_speed.x()*linear_speed.x() + linear_speed.y()*linear_speed.y() > MAX_LIN_SPEED_SQR ) {
+//            if (    (linear_speed.ry() + linear_acceleration * dt * cos( angle * 0.01744 )) *  (linear_speed.ry() + linear_acceleration * dt * cos( angle * 0.01744 ))
+//                    +
+//                    (linear_speed.rx() - linear_acceleration * dt * sin( angle * 0.01744 )) * (linear_speed.rx() - linear_acceleration * dt * sin( angle * 0.01744 )) > MAX_LIN_SPEED_SQR
+//                    )
+//                return;
+//        }
         linear_speed.ry() += linear_acceleration * dt * cos( angle * 0.01744 );
         linear_speed.rx() -= linear_acceleration * dt * sin( angle * 0.01744 );
     }
 }
 
 void CShip::attack() {
-    // add create object: bullet
+    GGraphics* bullet_g;
+    EWeaponID bullet_type = this->getWeaponType();
+    CBullet* bullet = new CBullet(this->getPosition(), this->getAngle(),
+                     bullet_type);
+    if ( bullet_type == LASER ) {
+        bullet_g = new GGraphics( "..\graphics\laser.png", bullet );
+    }
+    else if ( bullet_type == PLASMA  ) {
+        bullet_g = new GGraphics("..\graphics\plasma.png", bullet);
+    }
+    else if ( bullet_type == KINETIC ) {
+        bullet_g = new GGraphics("..\graphics\kinetic.png", bullet);
+    }
+    else
+        return;
+    this->getSpace()->addObject(bullet, bullet_g);
+}
+
+void CShip::move() {
+           // std::deque<CObject*> list = getSpace()->getObjInRange(this);
+           // jesli statek jest autonomiczny - podejmij decyzje na podstawie obiektow w zasiegu
+           return;
 }

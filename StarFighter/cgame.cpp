@@ -3,9 +3,6 @@
 #include <ctime>
 #include <QTimer>
 
-const int HOWMANYASTEROIDS = 3;
-const qreal SHIPSCALE = 0.25;
-
 int signed_rand() {
     return (rand() - RAND_MAX/2);
 }
@@ -23,23 +20,21 @@ CGame::CGame() {
 
     // add player's ship
     player = new CShip( PLASMA, PLAYER );
-    player->position = QPointF(100, 100);
-    space->FListObj.push_back(player);
+    player->setPosition( QPointF(100, 100) );
 
     GGraphics* player_g = new GGraphics("../graphics/ship-viper2.png", player);
     player_g->setScale( SHIPSCALE );
-    space->addItem(player_g);
-    space->FListGraphics.push_back(player_g);
+
+    space->addObject( player, player_g);
 
     // add enemy's ship
     enemy = new CShip( LASER );
-    enemy->position = QPointF(200, 200);
-    space->FListObj.push_back(enemy);
+    enemy->setPosition ( QPointF(200, 200) );
 
     GGraphics* enemy_g = new GGraphics("../graphics/ship-viper7.png", enemy);
     enemy_g->setScale( SHIPSCALE );
-    space->addItem( enemy_g );
-    space->FListGraphics.push_back( enemy_g );
+
+    space->addObject(enemy, enemy_g);
 
     // add some asteroids to FListObj
     double randomscale;
@@ -57,17 +52,27 @@ CGame::CGame() {
         CAsteroid * tmp = new CAsteroid(
                     randomX, randomY, randomAngle,
                     randomspeedlinearX, randomspeedlinearY, randomspeedangular, 10);
-        space->FListObj.push_back(tmp);
 
         GGraphics * tmp_g = new GGraphics( "../graphics/basic-asteroid.png", tmp );
         tmp_g->setScale( randomscale );
-        space->addItem( tmp_g );
-        space->FListGraphics.push_back(tmp_g);
+        space->addObject(tmp, tmp_g);
     }
 
-    // animate scene
+    // update objects
+    // TODO
+    QTimer* timer2 = new QTimer();
+    QObject::connect(timer2,
+                     &QTimer::timeout,
+                     space,
+                     &CSpace::updateObjs);
+    timer2->start(1000 / 33);
+
+    // draw animated scene
     QTimer* timer = new QTimer();
-    QObject::connect(timer, &QTimer::timeout, space, &QGraphicsScene::advance);
+    QObject::connect(timer, // sender
+                     &QTimer::timeout, // signal
+                     space, // receiver
+                     &QGraphicsScene::advance); // member
     timer->start(1000 / 33);
 
     this->setScene(space);
@@ -99,7 +104,7 @@ void CGame::keyPressEvent(QKeyEvent * event) {
             ship->accelerateAngular(true);
         }
         else if ( event->key() == Qt::Key_Shift ) {
-
+            //TODO: add bullet
         }
     }
 }

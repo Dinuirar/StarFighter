@@ -1,8 +1,10 @@
 #ifndef CSHIP_H
 #define CSHIP_H
 
+#include "cbullet.h"
 #include "cobject.h"
 #include "common.h"
+#include <deque>
 
 class CShip : public CObject {
 public:
@@ -15,11 +17,15 @@ public:
     void accelerateLinear(bool isDecceleration = false);
     void attack();
     void decreaseHP();
-    inline int getID() { return id; }
-    void move() { return; }
+    int getID() { return id; }
+    EWeaponID getWeaponType() { return weapon; }
+    void setWeaponType( EWeaponID _w ) { weapon = _w; }
+    void move();
 private:
     EId id;
-    int energy, shields;
+    EWeaponID weapon;
+    int energy;
+    int shields;
     int counterShip;
     int centerW, centerH;
     qreal linear_acceleration;

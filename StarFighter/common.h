@@ -12,6 +12,8 @@ extern const QString kineticName;
 extern qreal dt;
 extern int MAX_LIN_SPEED_SQR;
 extern int MAX_ANG_SPEED;
+extern qreal SHIPSCALE;
+extern int HOWMANYASTEROIDS;
 
 enum EWeaponID { PLASMA, LASER, KINETIC };
 
