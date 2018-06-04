@@ -1,7 +1,6 @@
 #ifndef CSHIP_H
 #define CSHIP_H
 
-#include "cbullet.h"
 #include "cobject.h"
 #include "common.h"
 #include <deque>
@@ -17,9 +16,9 @@ public:
     void accelerateLinear(bool isDecceleration = false);
     void attack();
     void decreaseHP();
-    int getID() { return id; }
-    EWeaponID getWeaponType() { return weapon; }
-    void setWeaponType( EWeaponID _w ) { weapon = _w; }
+    int getID();
+    EWeaponID getWeaponType();
+    void setWeaponType( EWeaponID _w );
     void move();
 private:
     EId id;

@@ -11,15 +11,17 @@ CGame::CGame() {
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setWindowTitle( QT_TRANSLATE_NOOP(QGraphicsView, "StarFighter - The Game") );
-//    menu = new CMenu(settings);
-//    this->setScene(menu);
-//    delete CMenu;
+    setSceneRect( QRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT) );
+    setAlignment( Qt::AlignTop );
+    //    menu = new CMenu(settings);
+    //    this->setScene(menu);
+    //    delete CMenu;
     menu = NULL;
     space = new CSpace(); // (settings);
     srand(std::time(0));
 
     // add player's ship
-    player = new CShip( PLASMA, PLAYER );
+    player = new CShip( LASER, PLAYER );
     player->setSpace( space );
     player->setPosition( QPointF(100, 100) );
 
@@ -29,7 +31,8 @@ CGame::CGame() {
     space->addObject( player, player_g);
 
     // add enemy's ship
-    enemy = new CShip( LASER );
+    enemy = new CShip( KINETIC, NPC );
+    enemy->setSpace( space );
     enemy->setPosition ( QPointF(200, 200) );
 
     GGraphics* enemy_g = new GGraphics("../graphics/ship-viper7.png", enemy);
@@ -53,14 +56,12 @@ CGame::CGame() {
         CAsteroid * tmp = new CAsteroid(
                     randomX, randomY, randomAngle,
                     randomspeedlinearX, randomspeedlinearY, randomspeedangular, 10);
-
         GGraphics * tmp_g = new GGraphics( "../graphics/basic-asteroid.png", tmp );
         tmp_g->setScale( randomscale );
         space->addObject(tmp, tmp_g);
     }
 
     // update objects
-    // TODO
     QTimer* timer2 = new QTimer();
     QObject::connect(timer2,
                      &QTimer::timeout,
@@ -105,8 +106,10 @@ void CGame::keyPressEvent(QKeyEvent * event) {
             ship->accelerateAngular(true);
         }
         else if ( event->key() == Qt::Key_Shift ) {
-            //TODO: add bullet
             ship->attack();
+        }
+        else if (event->key() == Qt::Key_Escape) {
+            delete this;
         }
     }
 }

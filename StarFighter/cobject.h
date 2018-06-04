@@ -1,8 +1,7 @@
-#ifndef COBJECT_H
-#define COBJECT_H
+#ifndef COBJECT_H_
+#define COBJECT_H_
 
 #include "common.h"
-#include "cspace.h"
 #include <QPointF>
 
 class CSpace;
@@ -15,19 +14,26 @@ public:
             qreal ANGULAR_SPEED = 0);
     virtual void move() = 0;
     qreal calcDistance(CObject* );
-    void setAngularSpeed(qreal _v) { angular_speed = _v; }
-    void setPosition(QPointF _p) { position = _p; }
-    void setAngle(qreal _a) { angle = _a; }
-    void setLinearSpeed(QPointF _l) { linear_speed = _l; }
-    qreal getAngularSpeed() { return angular_speed; }
-    QPointF getLinearSpeed() { return linear_speed; }
-    QPointF getPosition() { return position; }
-    qreal getAngle() { return angle; }
-    void setSpace(CSpace* _s) { FSpace = _s; }
-    CSpace* getSpace() { return FSpace; }
-    int getLifetime() { return cnt_lifetime; }
+    void setAngularSpeed(qreal _v);
+    void setPosition(QPointF _p);
+    void setAngle(qreal _a);
+    void setLinearSpeed(QPointF _l);
+    qreal getAngularSpeed();
+    QPointF getLinearSpeed();
+    QPointF getPosition();
+    qreal getAngle();
+    void setSpace(CSpace* _s);
+    CSpace* getSpace();
+    int getLifetime();
+    void removeObject();
+    bool isToDestroy();
+    void unremoveObject();
+    void reduceHP(int dmg);
+    int getHP();
     void update();
 protected:
+    void setHP( int hp );
+    bool destroy;
     QString modelName;
     int cnt_lifetime;
     qreal angular_speed;
@@ -35,6 +41,7 @@ protected:
     qreal angle;
     QPointF linear_speed;
 private:
+    u_int hitpoints;
     CSpace* FSpace;
 };
 

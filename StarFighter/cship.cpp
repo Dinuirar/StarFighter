@@ -1,4 +1,6 @@
 #include "cship.h"
+#include "cspace.h"
+#include "cbullet.h"
 #include "ggraphics.h"
 #include <cmath>
 
@@ -11,7 +13,8 @@ CShip::CShip( EWeaponID WEAPONID, EId ID,
              int HULL, int SHIELDS, int ENERGY)
     : CObject( X, Y, ANGLE, 0, 0, 0),
       linear_acceleration(LINEAR_ACC), angular_acceleration(ANGULAR_ACC),
-      shields(SHIELDS), energy(ENERGY),  id(ID) {
+      shields(SHIELDS), energy(ENERGY),  id(ID), weapon(WEAPONID) {
+    this->setHP( HULL );
 }
 
 void CShip::accelerateAngular(bool plus) {
@@ -75,6 +78,8 @@ void CShip::attack() {
     if( !bullet_g )
         return;
     bullet_g->setScale(0.2);
+    bullet->setSpace( this->getSpace() );
+    bullet->setParent( this );
     this->getSpace()->addObject(bullet, bullet_g);
 }
 
@@ -83,3 +88,16 @@ void CShip::move() {
            // jesli statek jest autonomiczny - podejmij decyzje na podstawie obiektow w zasiegu
            return;
 }
+
+int CShip::getID() {
+    return id;
+}
+
+EWeaponID CShip::getWeaponType() {
+    return weapon;
+}
+
+void CShip::setWeaponType( EWeaponID _w ) {
+    weapon = _w;
+}
+

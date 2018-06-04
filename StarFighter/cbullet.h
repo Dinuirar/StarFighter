@@ -4,21 +4,26 @@
 #include "cobject.h"
 #include "common.h"
 
+class CShip;
+
 class CBullet : public CObject {
 public:
     CBullet();
     CBullet(QPointF POSITION, qreal ANGLE,
-            EWeaponID TYPE, qreal RANGE = 10);
+            EWeaponID TYPE, qreal RANGE = 50);
     qreal getRange() { return range; }
     void setRange(qreal _r) { range = _r; }
     EWeaponID getType() { return type; }
     void setType(EWeaponID _type) { type = _type; }
-    int getDamage() { return damage; }
-    void setDamage( int _d ) { damage = _d; }
+    int getDmgValue() { return damage; }
+    void setDmgValue( int _d ) { damage = _d; }
     int getMaxLife() { return MAXLIFETIME; }
     void setMaxLife( int _m ) { MAXLIFETIME = _m; }
-    void move() { return; }
+    void setParent( CShip* _parent ) { parent = _parent; }
+    CShip* getParent() { return parent; }
+    void move();
 private:
+    CShip* parent;
     int MAXLIFETIME;
     qreal range;
     EWeaponID type;

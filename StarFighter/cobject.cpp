@@ -1,4 +1,5 @@
 #include "cobject.h"
+#include "cspace.h"
 
 CObject::CObject() {
 }
@@ -9,7 +10,9 @@ CObject::CObject(qreal X, qreal Y, qreal ANGLE,
       linear_speed( QPointF(LINEAR_SPEEDX, LINEAR_SPEEDY) ),
       angular_speed(ANGULAR_SPEED),
       cnt_lifetime(0) {
+    hitpoints = 30;
     FSpace = NULL;
+    destroy = false;
 }
 
 qreal CObject::calcDistance(CObject * _obj) {
@@ -18,6 +21,9 @@ qreal CObject::calcDistance(CObject * _obj) {
 }
 
 void CObject::update() {
+    if ( this->getHP() < 0 ) {
+        this->removeObject();
+    }
     if ( position.x() < 0 ) {
         position.rx() = WINDOW_WIDTH;
     }
@@ -36,19 +42,70 @@ void CObject::update() {
     cnt_lifetime++;
 }
 
-// TODO: error control
-//void setAngularSpeed(qreal _v) {
-//    angular_speed = _v;
-//}
+void CObject::setAngularSpeed(qreal _v) {
+    angular_speed = _v;
+}
 
-//void setPosition(QPointF _p) {
-//    position = _p;
-//}
+void CObject::setPosition(QPointF _p) {
+    position = _p;
+}
 
-//void setAngle(qreal _a) {
-//    angle = _a;
-//}
+void CObject::setAngle(qreal _a) {
+    angle = _a;
+}
 
-//void setLinearSpeed(QPointF _l) {
-//    linear_speed = _l;
-//}
+void CObject::setLinearSpeed(QPointF _l) {
+    linear_speed = _l;
+}
+
+qreal CObject::getAngularSpeed() {
+    return angular_speed;
+}
+
+QPointF CObject::getLinearSpeed() {
+    return linear_speed;
+}
+
+QPointF CObject::getPosition() {
+    return position;
+}
+
+qreal CObject::getAngle() {
+    return angle;
+}
+
+void CObject::setSpace(CSpace* _s) {
+    FSpace = _s;
+}
+
+CSpace* CObject::getSpace() {
+    return FSpace;
+}
+
+int CObject::getLifetime() {
+    return cnt_lifetime;
+}
+
+void CObject::removeObject() {
+    destroy = true;
+}
+
+bool CObject::isToDestroy() {
+    return destroy;
+}
+
+void CObject::unremoveObject() {
+    destroy = false;
+}
+
+void CObject::reduceHP( int dmg ) {
+    hitpoints -= dmg;
+}
+
+int CObject::getHP() {
+    return hitpoints;
+}
+
+void CObject::setHP( int hp) {
+    hitpoints = hp;
+}
