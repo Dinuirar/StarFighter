@@ -3,6 +3,7 @@
 
 #include "common.h"
 #include <QPointF>
+#include <deque>
 
 class CSpace;
 
@@ -12,6 +13,7 @@ public:
     CObject(qreal X, qreal Y, qreal ANGLE,
             qreal LINEAR_SPEEDX = 0, qreal LINEAR_SPEEDY = 0,
             qreal ANGULAR_SPEED = 0);
+    virtual ~CObject();
     virtual void move() = 0;
     qreal calcDistance(CObject* );
     void setAngularSpeed(qreal _v);
@@ -33,16 +35,19 @@ public:
     void update();
 protected:
     void setHP( int hp );
-    bool destroy;
+    void setSize( qreal _s ) {size = _s; }
     QString modelName;
     int cnt_lifetime;
     qreal angular_speed;
-    QPointF position;
-    qreal angle;
     QPointF linear_speed;
 private:
-    u_int hitpoints;
+    qreal size;
+    bool destroy;
+    int hitpoints;
+    QPointF position;
+    qreal angle;
     CSpace* FSpace;
+    std::deque<CObject*> objs;
 };
 
 #endif // COBJECT_H

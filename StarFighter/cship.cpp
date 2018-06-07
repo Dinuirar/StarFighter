@@ -14,20 +14,23 @@ CShip::CShip( EWeaponID WEAPONID, EId ID,
     : CObject( X, Y, ANGLE, 0, 0, 0),
       linear_acceleration(LINEAR_ACC), angular_acceleration(ANGULAR_ACC),
       shields(SHIELDS), energy(ENERGY),  id(ID), weapon(WEAPONID) {
-    this->setHP( HULL );
+    this->setHP(HULL);
+}
+
+CShip::CShip(qreal size, EWeaponID WEAPONID, EId ID, CSpace *SPACE, QPoint POSITION, qreal ANGLE, qreal LINEAR_ACC, qreal ANGULAR_ACC, int HULL, int SHIELDS, int ENERGY)
+    : CObject( POSITION.x(), POSITION.y(), ANGLE, 0, 0, 0),
+      linear_acceleration(LINEAR_ACC), angular_acceleration(ANGULAR_ACC),
+      shields(SHIELDS), energy(ENERGY), id(ID), weapon(WEAPONID) {
+    this->setHP(HULL);
+    this->setSpace(SPACE);
+    this->setSize(size);
 }
 
 void CShip::accelerateAngular(bool plus) {
     if(plus) {
-//        if (angular_speed > MAX_ANG_SPEED)
-//            if (angular_speed + dt > MAX_ANG_SPEED)
-//                return;
         angular_speed += dt * angular_acceleration;
     }
     else {
-//        if (angular_speed > MAX_ANG_SPEED)
-//            if (angular_speed - dt > MAX_ANG_SPEED)
-//                return;
         angular_speed -= dt * angular_acceleration;
     }
 }
@@ -41,8 +44,8 @@ void CShip::accelerateLinear(bool isDecceleration) {
 //                    )
 //                return;
 //        }
-        linear_speed.ry() -= linear_acceleration * dt * cos( angle * 0.01744 );
-        linear_speed.rx() += linear_acceleration * dt * sin( angle * 0.01744 );
+        linear_speed.ry() -= linear_acceleration * dt * cos( getAngle() * 0.01744 );
+        linear_speed.rx() += linear_acceleration * dt * sin( getAngle() * 0.01744 );
     }
     else {
 //        if( linear_speed.x()*linear_speed.x() + linear_speed.y()*linear_speed.y() > MAX_LIN_SPEED_SQR ) {
@@ -52,14 +55,15 @@ void CShip::accelerateLinear(bool isDecceleration) {
 //                    )
 //                return;
 //        }
-        linear_speed.ry() += linear_acceleration * dt * cos( angle * 0.01744 );
-        linear_speed.rx() -= linear_acceleration * dt * sin( angle * 0.01744 );
+        linear_speed.ry() += linear_acceleration * dt * cos( getAngle() * 0.01744 );
+        linear_speed.rx() -= linear_acceleration * dt * sin( getAngle() * 0.01744 );
     }
 }
 
 void CShip::attack() {
     if( !this->getSpace() )
         return;
+//    if ( energy )
     GGraphics* bullet_g;
     EWeaponID bullet_type = this->getWeaponType();
     CBullet* bullet = new CBullet(this->getPosition(), this->getAngle(),
@@ -84,9 +88,10 @@ void CShip::attack() {
 }
 
 void CShip::move() {
-           // std::deque<CObject*> list = getSpace()->getObjInRange(this);
-           // jesli statek jest autonomiczny - podejmij decyzje na podstawie obiektow w zasiegu
-           return;
+    energy++;
+    // std::deque<CObject*> list = getSpace()->getObjInRange(this);
+    // jesli statek jest autonomiczny - podejmij decyzje na podstawie obiektow w zasiegu
+    return;
 }
 
 int CShip::getID() {
@@ -101,3 +106,10 @@ void CShip::setWeaponType( EWeaponID _w ) {
     weapon = _w;
 }
 
+int CShip::getEnergy() {
+    return energy;
+}
+
+void CShip::setEnergy(int _e) {
+    energy = _e;
+}

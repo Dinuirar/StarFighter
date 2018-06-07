@@ -32,7 +32,9 @@ CSpace::CSpace() {
 std::deque<CObject*> CSpace::getObjInRange(CObject *_obj, qreal _range) {
     std::deque<CObject*> objInRange;
     for (u_int i = 0; i < FListObj.size(); i++) {
-        if ( _obj->calcDistance(FListObj[i]) <= _range )
+        if( dynamic_cast<CBullet*>(FListObj[i]) != NULL )
+            continue;
+        if( _obj->calcDistance(FListObj[i]) <= _range )
             objInRange.push_back(FListObj[i]);
     }
     return objInRange;
@@ -80,11 +82,14 @@ void CSpace::removeObject( u_int index ) {
 }
 
 void CSpace::updateObjs() {
-    if( !player )
-        return;
+    if( player ) {
+        playerHP = QString::number( player->getHP() );
+        hp_indicator->setText( "player: " + playerHP );
+    }
+    else {
+        hp_indicator->setText( "you won!" );
+    }
 
-    playerHP = QString::number( player->getHP() );
-    hp_indicator->setText( "player: " + playerHP );
 
     if ( enemy ) {
         enemyHP = QString::number( enemy->getHP() );

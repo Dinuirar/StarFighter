@@ -12,6 +12,11 @@ public:
          qreal X = 0, qreal Y = 0, qreal ANGLE = 0,
          qreal LINEAR_ACC = 30, qreal ANGULAR_ACC = 8,
          int HULL = 100, int SHIELDS = 100, int ENERGY = 100 );
+    CShip( qreal size, EWeaponID WEAPONID = PLASMA, EId ID = NPC,
+         CSpace* SPACE = NULL, QPoint POSITION = QPoint(10, 10), qreal ANGLE = 0,
+         qreal LINEAR_ACC = 30, qreal ANGULAR_ACC = 8,
+         int HULL = 100, int SHIELDS = 100, int ENERGY = 100 );
+    ~CShip() {}
     void accelerateAngular(bool isClockwise);
     void accelerateLinear(bool isDecceleration = false);
     void attack();
@@ -19,6 +24,8 @@ public:
     int getID();
     EWeaponID getWeaponType();
     void setWeaponType( EWeaponID _w );
+    int getEnergy();
+    void setEnergy(int _e);
     void move();
 private:
     EId id;

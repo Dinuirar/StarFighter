@@ -8,11 +8,6 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsScene>
 #include <deque>
-//#include <QKeyEvent>
-
-class CObject;
-class GGraphics;
-class CShip;
 
 class CSpace : public QGraphicsScene {
 public:

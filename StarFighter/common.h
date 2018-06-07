@@ -15,6 +15,9 @@ extern int MAX_ANG_SPEED;
 extern qreal SHIPSCALE;
 extern int HOWMANYASTEROIDS;
 
+const QString asteroids[] = { "asteroid1.png", "asteroid2.png", "asteroid3.png", "asteroid4.png" };
+
+
 enum EWeaponID { PLASMA, LASER, KINETIC };
 
 enum EDifficulty { EASY, MEDIUM, HARD };

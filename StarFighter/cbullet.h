@@ -11,6 +11,7 @@ public:
     CBullet();
     CBullet(QPointF POSITION, qreal ANGLE,
             EWeaponID TYPE, qreal RANGE = 50);
+    ~CBullet() {}
     qreal getRange() { return range; }
     void setRange(qreal _r) { range = _r; }
     EWeaponID getType() { return type; }

@@ -14,6 +14,7 @@ private:
 public:
     GGraphics();
     GGraphics( QString, CObject * );
+    GGraphics( QString, CObject *, qreal scale );
     void advance( int );
     void setObject( CObject* p_object ) { fobject = p_object; }
     void setModel( QString );

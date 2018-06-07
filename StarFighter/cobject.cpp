@@ -1,5 +1,6 @@
 #include "cobject.h"
 #include "cspace.h"
+#include "cbullet.h"
 
 CObject::CObject() {
 }
@@ -13,6 +14,10 @@ CObject::CObject(qreal X, qreal Y, qreal ANGLE,
     hitpoints = 30;
     FSpace = NULL;
     destroy = false;
+    size = 10;
+}
+
+CObject::~CObject() {
 }
 
 qreal CObject::calcDistance(CObject * _obj) {
@@ -21,7 +26,7 @@ qreal CObject::calcDistance(CObject * _obj) {
 }
 
 void CObject::update() {
-    if ( this->getHP() < 0 ) {
+    if ( this->getHP() <= 0 ) {
         this->removeObject();
     }
     if ( position.x() < 0 ) {
@@ -36,9 +41,26 @@ void CObject::update() {
     else if ( position.y() > WINDOW_HEIGHT ) {
         position.ry() = 0;
     }
-    position.rx() += dt * linear_speed.x();
-    position.ry() += dt * linear_speed.y();
-    angle += dt * angular_speed;
+
+    objs = getSpace()->getObjInRange(this, size);
+    if ( objs.size() == 1 || dynamic_cast<CBullet*>(this) ) {
+        position.rx() += dt * linear_speed.x();
+        position.ry() += dt * linear_speed.y();
+        angle += dt * angular_speed;
+    }
+    else { // collision?
+//        this->linear_speed = -linear_speed;
+        return;
+//        for ( u_int i = 0; i < objs.size(); i++ ) {
+//            if( this != objs[i] ) {
+////                this->reduceHP(1);
+////                objs[i]->reduceHP(1);
+//                this->linear_speed = -linear_speed;
+//                return;
+//            }
+//        }
+    }
+
     cnt_lifetime++;
 }
 

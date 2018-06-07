@@ -8,6 +8,12 @@ GGraphics::GGraphics( QString MODELNAME, CObject * OBJECT ) {
     setObject(OBJECT);
 }
 
+GGraphics::GGraphics(QString MODELNAME, CObject * OBJECT, qreal SCALE) {
+    setModel(MODELNAME);
+    setObject(OBJECT);
+    setScale(SCALE);
+}
+
 void GGraphics::advance(int step) {
     if ( !step )
         return;

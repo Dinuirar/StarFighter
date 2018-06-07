@@ -9,9 +9,22 @@ CBullet::CBullet(QPointF POSITION, qreal ANGLE,
                  EWeaponID TYPE, qreal RANGE)
     : CObject(POSITION.x(), POSITION.y(), ANGLE),
       range(RANGE) {
-    this->setMaxLife( 100 );
-    this->setDmgValue( 10 );
-    qreal lin_speed = 60;
+    qreal lin_speed;
+    if ( TYPE == LASER ) {
+        this->setDmgValue( 10 );
+        this->setMaxLife( 40 );
+        lin_speed = 140;
+    }
+    else if ( TYPE == PLASMA) {
+        this->setDmgValue( 20 );
+        this->setMaxLife( 50 );
+        lin_speed = 70;
+    }
+    else {
+        this->setDmgValue( 5 );
+        this->setMaxLife( 100 );
+        lin_speed = 80;
+    }
     ANGLE = 3.14/2 - deg2rad(ANGLE);
     this->setLinearSpeed( QPointF( lin_speed*cos( ANGLE ), -lin_speed*sin( ANGLE ) ) );
 }

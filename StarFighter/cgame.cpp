@@ -1,4 +1,5 @@
 #include "cgame.h"
+#include "common.h"
 #include <random>
 #include <ctime>
 #include <QTimer>
@@ -21,42 +22,26 @@ CGame::CGame() {
     srand(std::time(0));
 
     // add player's ship
-    player = new CShip( LASER, PLAYER );
-    player->setSpace( space );
-    player->setPosition( QPointF(100, 100) );
-
-    GGraphics* player_g = new GGraphics("../graphics/ship-viper2.png", player);
-    player_g->setScale( SHIPSCALE );
-
+    player = new CShip( 25, LASER, PLAYER, space, QPoint(300, 400) );
+    GGraphics* player_g = new GGraphics("../graphics/ship-viper2.png", player, SHIPSCALE);
     space->addObject( player, player_g);
 
     // add enemy's ship
-    enemy = new CShip( KINETIC, NPC );
-    enemy->setSpace( space );
-    enemy->setPosition ( QPointF(200, 200) );
-
-    GGraphics* enemy_g = new GGraphics("../graphics/ship-viper7.png", enemy);
-    enemy_g->setScale( SHIPSCALE );
-
+    enemy = new CShip( 25, PLASMA, NPC, space, QPoint(400, 300) );
+    GGraphics* enemy_g = new GGraphics("../graphics/ship-raider.png", enemy, SHIPSCALE);
     space->addObject(enemy, enemy_g);
 
     // add some asteroids to FListObj
-    double randomscale;
-    double randomspeedlinearX, randomspeedlinearY;
-    double randomspeedangular;
-    double randomX, randomY, randomAngle;
+    double randomspeedlinearX, randomspeedlinearY, randomspeedangular;
+    qreal randomscale = 0.6 * (double( rand() ) / 2 / RAND_MAX) + 0.2;
     for ( int i = 0; i < HOWMANYASTEROIDS; i++ ) {
-        randomscale = 0.6 * (double( rand() ) / 2 / RAND_MAX) + 0.2; // scale from 0.2 to 0.8
         randomspeedlinearX = signed_rand() %11;
         randomspeedlinearY = signed_rand()%11;
         randomspeedangular = signed_rand()%5;
-        randomX = rand()%WINDOW_WIDTH;
-        randomY = rand()%WINDOW_HEIGHT;
-        randomAngle = signed_rand()%360;
-        CAsteroid * tmp = new CAsteroid(
-                    randomX, randomY, randomAngle,
+        CAsteroid * tmp = new CAsteroid( randomscale * 200, space,
+                    rand()%WINDOW_WIDTH, rand()%WINDOW_HEIGHT, signed_rand()%360,
                     randomspeedlinearX, randomspeedlinearY, randomspeedangular, 10);
-        GGraphics * tmp_g = new GGraphics( "../graphics/basic-asteroid.png", tmp );
+        GGraphics * tmp_g = new GGraphics( "../graphics/" + asteroids[ rand()%4 ], tmp );
         tmp_g->setScale( randomscale );
         space->addObject(tmp, tmp_g);
     }
@@ -83,8 +68,7 @@ CGame::CGame() {
 void CGame::keyPressEvent(QKeyEvent * event) {
     if( menu ) return; // mode -> menu
     else { // mode -> space
-        CShip* ship;
-        ship = player;
+//        CShip* ship;
 //        for (size_t i = 0; i < space->FListObj.size(); i++) { // find player's ship
 //            ship = dynamic_cast<CShip*>( space->FListObj[i] ); // try to cast object to ship
 //            if ( !ship ) continue; // if object is not a ship - continue to the next element
@@ -94,20 +78,38 @@ void CGame::keyPressEvent(QKeyEvent * event) {
 //            }
 //        }
         if( event->key() == Qt::Key_Up) {
-            ship->accelerateLinear();
+            player->accelerateLinear();
         }
         else if( event->key() == Qt::Key_Down) {
-            ship->accelerateLinear(true);
+            player->accelerateLinear(true);
         }
         else if ( event->key() == Qt::Key_Left ) {
-            ship->accelerateAngular(false);
+            player->accelerateAngular(false);
         }
         else if ( event->key() == Qt::Key_Right ) {
-            ship->accelerateAngular(true);
+            player->accelerateAngular(true);
         }
         else if ( event->key() == Qt::Key_Shift ) {
-            ship->attack();
+            player->attack();
         }
+
+        if( event->key() == Qt::Key_W) {
+            enemy->accelerateLinear();
+        }
+        else if( event->key() == Qt::Key_S) {
+            enemy->accelerateLinear(true);
+        }
+        else if ( event->key() == Qt::Key_A ) {
+            enemy->accelerateAngular(false);
+        }
+        else if ( event->key() == Qt::Key_D ) {
+            enemy->accelerateAngular(true);
+        }
+        else if ( event->key() == Qt::Key_Space ) {
+            enemy->attack();
+        }
+
+
         else if (event->key() == Qt::Key_Escape) {
             delete this;
         }
