@@ -23,6 +23,7 @@ public:
     void move();
 protected:
     int id;
+    void collide( CObject* );
 };
 
 #endif // CASTEROID_H

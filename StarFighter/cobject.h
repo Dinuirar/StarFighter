@@ -32,15 +32,18 @@ public:
     void unremoveObject();
     void reduceHP(int dmg);
     int getHP();
+    int getSize() { return size; }
     void update();
 protected:
     void setHP( int hp );
     void setSize( qreal _s ) {size = _s; }
+    virtual void collide( CObject* ) = 0;
     QString modelName;
     int cnt_lifetime;
     qreal angular_speed;
     QPointF linear_speed;
 private:
+    bool colliding;
     qreal size;
     bool destroy;
     int hitpoints;

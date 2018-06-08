@@ -7,6 +7,12 @@
 #include <QGraphicsView>
 #include <QGraphicsPixmapItem>
 
+// Player 1:
+// arrow keys - movement, 0 - shot
+// Player 2:
+// WASD - movement, spacebar - shot
+// ESC - exit game
+
 class CMenu : public QGraphicsScene {
 private:
     CSettings Fsettings;

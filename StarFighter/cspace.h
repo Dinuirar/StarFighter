@@ -21,6 +21,10 @@ private:
     CShip* player, * enemy;
     QString playerHP, enemyHP;
     QGraphicsSimpleTextItem* hp_indicator, * enemy_hp_indicator;
+    QString playerFuel, enemyFuel;
+    QGraphicsSimpleTextItem* fuel_indicator, * enemy_fuel_indicator;
+    QString playerEnergy, enemyEnergy;
+    QGraphicsSimpleTextItem* energy_indicator, * enemy_energy_indicator;
     std::deque<CObject*> FListObj;
     std::deque<GGraphics*> FListGraphics;
 };

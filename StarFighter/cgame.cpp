@@ -22,28 +22,29 @@ CGame::CGame() {
     srand(std::time(0));
 
     // add player's ship
-    player = new CShip( 25, LASER, PLAYER, space, QPoint(300, 400) );
+    player = new CShip( 10, LASER, PLAYER, space, QPoint(300, 400) );
     GGraphics* player_g = new GGraphics("../graphics/ship-viper2.png", player, SHIPSCALE);
     space->addObject( player, player_g);
 
     // add enemy's ship
-    enemy = new CShip( 25, PLASMA, NPC, space, QPoint(400, 300) );
+    enemy = new CShip( 10, PLASMA, NPC, space, QPoint(400, 300) );
     GGraphics* enemy_g = new GGraphics("../graphics/ship-raider.png", enemy, SHIPSCALE);
     space->addObject(enemy, enemy_g);
 
     // add some asteroids to FListObj
     double randomspeedlinearX, randomspeedlinearY, randomspeedangular;
-    qreal randomscale = 0.6 * (double( rand() ) / 2 / RAND_MAX) + 0.2;
-    for ( int i = 0; i < HOWMANYASTEROIDS; i++ ) {
+    qreal randomscale;
+    for ( u_int i = 0; i < HOWMANYASTEROIDS; i++ ) {
+        randomscale = 0.6 * (double( rand() ) / 2 / RAND_MAX) + 0.2;
         randomspeedlinearX = signed_rand() %11;
         randomspeedlinearY = signed_rand()%11;
         randomspeedangular = signed_rand()%5;
-        CAsteroid * tmp = new CAsteroid( randomscale * 200, space,
+        CAsteroid * tmp = new CAsteroid( randomscale * 100, space,
                     rand()%WINDOW_WIDTH, rand()%WINDOW_HEIGHT, signed_rand()%360,
-                    randomspeedlinearX, randomspeedlinearY, randomspeedangular, 10);
+                    randomspeedlinearX, randomspeedlinearY, randomspeedangular, 50);
         GGraphics * tmp_g = new GGraphics( "../graphics/" + asteroids[ rand()%4 ], tmp );
         tmp_g->setScale( randomscale );
-        space->addObject(tmp, tmp_g);
+        space->addObject( tmp, tmp_g );
     }
 
     // update objects
@@ -89,7 +90,7 @@ void CGame::keyPressEvent(QKeyEvent * event) {
         else if ( event->key() == Qt::Key_Right ) {
             player->accelerateAngular(true);
         }
-        else if ( event->key() == Qt::Key_Shift ) {
+        else if ( event->key() == Qt::Key_0  ) {
             player->attack();
         }
 

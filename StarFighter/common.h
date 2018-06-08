@@ -3,20 +3,20 @@
 
 #include <QString>
 
-extern int WINDOW_WIDTH;
-extern int WINDOW_HEIGHT;
+extern u_int WINDOW_WIDTH;
+extern u_int WINDOW_HEIGHT;
 extern QString SPACE_BACKGROUND;
 extern const QString laserName;
 extern const QString plasmaName;
 extern const QString kineticName;
 extern qreal dt;
-extern int MAX_LIN_SPEED_SQR;
-extern int MAX_ANG_SPEED;
+//extern int MAX_LIN_SPEED_SQR;
+//extern int MAX_ANG_SPEED;
 extern qreal SHIPSCALE;
-extern int HOWMANYASTEROIDS;
-
+extern u_int HOWMANYASTEROIDS;
+extern QString destroyedMessage;
 const QString asteroids[] = { "asteroid1.png", "asteroid2.png", "asteroid3.png", "asteroid4.png" };
-
+extern u_int laser_energy_cost, plasma_energy_cost, kinetic_energy_cost;
 
 enum EWeaponID { PLASMA, LASER, KINETIC };
 

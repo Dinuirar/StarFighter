@@ -1,5 +1,6 @@
 #include "cobject.h"
 #include "cspace.h"
+#include "casteroid.h"
 #include "cbullet.h"
 
 CObject::CObject() {
@@ -12,9 +13,10 @@ CObject::CObject(qreal X, qreal Y, qreal ANGLE,
       angular_speed(ANGULAR_SPEED),
       cnt_lifetime(0) {
     hitpoints = 30;
+    size = 10;
     FSpace = NULL;
     destroy = false;
-    size = 10;
+    colliding = false;
 }
 
 CObject::~CObject() {
@@ -29,6 +31,7 @@ void CObject::update() {
     if ( this->getHP() <= 0 ) {
         this->removeObject();
     }
+
     if ( position.x() < 0 ) {
         position.rx() = WINDOW_WIDTH;
     }
@@ -42,15 +45,48 @@ void CObject::update() {
         position.ry() = 0;
     }
 
-    objs = getSpace()->getObjInRange(this, size);
-    if ( objs.size() == 1 || dynamic_cast<CBullet*>(this) ) {
-        position.rx() += dt * linear_speed.x();
-        position.ry() += dt * linear_speed.y();
-        angle += dt * angular_speed;
+    objs = getSpace()->getObjInRange( this, this->getSize() );
+    if ( objs.size() == 1 || dynamic_cast<CBullet*>( this ) ) {
+        colliding = false;
     }
-    else { // collision?
-//        this->linear_speed = -linear_speed;
-        return;
+    else {
+        colliding = true;
+//        this->collide( );
+//        CObject* collide;
+//        for ( u_int i = 0; i < objs.size(); i++ ) {
+//            if ( dynamic_cast<CObject*>( this ) != objs[i] ) {
+//                collide = objs[i];
+//            }
+//        }
+//        if ( dynamic_cast<CAsteroid*>( collide ) ) {
+
+//        }
+    }
+
+
+    if ( colliding ) {
+        reduceHP( 1 );
+//        if ( ! dynamic_cast<CAsteroid*>( this ) ) {
+//            // change linear_speed
+//            for ( u_int i = 0; i < objs.size(); i++ ) {
+//                if( (CObject*)this != objs[i] ) {
+////                    this->setLinearSpeed( (-1) * this->getLinearSpeed() );
+//                    this->setLinearSpeed( QPointF(0, 0) );
+//                    this->setAngularSpeed( 0 );
+//                }
+//            }
+//        }
+    }
+
+    this->setPosition( this->getPosition() + dt * this->getLinearSpeed() );
+    this->setAngle( this->getAngle() + dt * this->getAngularSpeed() );
+
+//    if ( objs.size() == 1 || dynamic_cast<CBullet*>( this ) ) {
+//        this->setPosition( this->getPosition() + dt * this->getLinearSpeed() );
+//        this->setAngle( this->getAngle() + dt * this->getAngularSpeed() );
+//    }
+//    else { // collision?
+//        colliding = true;
 //        for ( u_int i = 0; i < objs.size(); i++ ) {
 //            if( this != objs[i] ) {
 ////                this->reduceHP(1);
@@ -59,8 +95,7 @@ void CObject::update() {
 //                return;
 //            }
 //        }
-    }
-
+//    }
     cnt_lifetime++;
 }
 

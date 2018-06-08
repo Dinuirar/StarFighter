@@ -9,6 +9,7 @@ CBullet::CBullet(QPointF POSITION, qreal ANGLE,
                  EWeaponID TYPE, qreal RANGE)
     : CObject(POSITION.x(), POSITION.y(), ANGLE),
       range(RANGE) {
+    this->setSize( 5 );
     qreal lin_speed;
     if ( TYPE == LASER ) {
         this->setDmgValue( 10 );
@@ -43,5 +44,10 @@ void CBullet::move() {
 
     if (cnt_lifetime > getMaxLife() )
         this->removeObject();
+    return;
+}
+
+void CBullet::collide(CObject *) {
+    // deal damage to asteroid or
     return;
 }

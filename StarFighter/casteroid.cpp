@@ -36,3 +36,9 @@ void CAsteroid::update() {
 void CAsteroid::move() {
 
 }
+
+void CAsteroid::collide(CObject *) {
+    // do nothing with bullet
+    // do nothing with ship
+    // bounce from the other asteroid
+}

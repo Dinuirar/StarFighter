@@ -4,7 +4,7 @@ CMenu::CMenu() {
     coordinates = new QGraphicsPixmapItem(
                 QPixmap::fromImage(
                     QImage(
-                        "/home/kassus/Desktop/Qt/github/StarCruise/graphics/coordinates.png"
+                        "../graphics/coordinates.png"
                         )
                     )
                 );

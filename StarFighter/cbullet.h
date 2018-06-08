@@ -23,6 +23,8 @@ public:
     void setParent( CShip* _parent ) { parent = _parent; }
     CShip* getParent() { return parent; }
     void move();
+protected:
+    void collide( CObject * );
 private:
     CShip* parent;
     int MAXLIFETIME;
