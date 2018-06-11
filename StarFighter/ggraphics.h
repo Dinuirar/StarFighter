@@ -11,6 +11,9 @@ class GGraphics : public QGraphicsPixmapItem {
 private:
     CObject* fobject;
     qreal centerW, centerH;
+    int start_cnt;
+protected:
+    int getCounter() { return start_cnt; }
 public:
     GGraphics();
     GGraphics( QString, CObject * );

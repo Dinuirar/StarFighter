@@ -29,7 +29,7 @@ qreal CObject::calcDistance(CObject * _obj) {
 
 void CObject::update() {
     if ( this->getHP() <= 0 ) {
-        this->removeObject();
+        this->setDestroyObject();
     }
 
     if ( position.x() < 0 ) {
@@ -45,57 +45,25 @@ void CObject::update() {
         position.ry() = 0;
     }
 
+    objs.clear();
     objs = getSpace()->getObjInRange( this, this->getSize() );
-    if ( objs.size() == 1 || dynamic_cast<CBullet*>( this ) ) {
+    if ( objs.size() == 1 ) {
         colliding = false;
     }
     else {
         colliding = true;
-//        this->collide( );
-//        CObject* collide;
-//        for ( u_int i = 0; i < objs.size(); i++ ) {
-//            if ( dynamic_cast<CObject*>( this ) != objs[i] ) {
-//                collide = objs[i];
-//            }
-//        }
-//        if ( dynamic_cast<CAsteroid*>( collide ) ) {
-
-//        }
-    }
-
-
-    if ( colliding ) {
-        reduceHP( 1 );
-//        if ( ! dynamic_cast<CAsteroid*>( this ) ) {
-//            // change linear_speed
-//            for ( u_int i = 0; i < objs.size(); i++ ) {
-//                if( (CObject*)this != objs[i] ) {
-////                    this->setLinearSpeed( (-1) * this->getLinearSpeed() );
-//                    this->setLinearSpeed( QPointF(0, 0) );
-//                    this->setAngularSpeed( 0 );
-//                }
-//            }
-//        }
+        for ( u_int i = 0; i < objs.size(); i++ ) {
+            if( objs[i] != dynamic_cast<CObject*>( this ) ) {
+                //this->collide( objs[i] );
+                objs[i]->collide( this );
+                break;
+            }
+        }
     }
 
     this->setPosition( this->getPosition() + dt * this->getLinearSpeed() );
     this->setAngle( this->getAngle() + dt * this->getAngularSpeed() );
 
-//    if ( objs.size() == 1 || dynamic_cast<CBullet*>( this ) ) {
-//        this->setPosition( this->getPosition() + dt * this->getLinearSpeed() );
-//        this->setAngle( this->getAngle() + dt * this->getAngularSpeed() );
-//    }
-//    else { // collision?
-//        colliding = true;
-//        for ( u_int i = 0; i < objs.size(); i++ ) {
-//            if( this != objs[i] ) {
-////                this->reduceHP(1);
-////                objs[i]->reduceHP(1);
-//                this->linear_speed = -linear_speed;
-//                return;
-//            }
-//        }
-//    }
     cnt_lifetime++;
 }
 
@@ -143,7 +111,7 @@ int CObject::getLifetime() {
     return cnt_lifetime;
 }
 
-void CObject::removeObject() {
+void CObject::setDestroyObject() {
     destroy = true;
 }
 

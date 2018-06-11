@@ -15,6 +15,7 @@ public:
             qreal ANGULAR_SPEED = 0);
     virtual ~CObject();
     virtual void move() = 0;
+    void update();
     qreal calcDistance(CObject* );
     void setAngularSpeed(qreal _v);
     void setPosition(QPointF _p);
@@ -27,13 +28,12 @@ public:
     void setSpace(CSpace* _s);
     CSpace* getSpace();
     int getLifetime();
-    void removeObject();
+    void setDestroyObject();
     bool isToDestroy();
     void unremoveObject();
     void reduceHP(int dmg);
     int getHP();
     int getSize() { return size; }
-    void update();
 protected:
     void setHP( int hp );
     void setSize( qreal _s ) {size = _s; }

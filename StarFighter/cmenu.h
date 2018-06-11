@@ -15,11 +15,11 @@
 
 class CMenu : public QGraphicsScene {
 private:
-    CSettings Fsettings;
+    CSettings* Fsettings;
     QGraphicsPixmapItem* coordinates;
 public:
     CMenu();
-    CMenu(CSettings&);
+    CMenu( CSettings* );
 };
 
 #endif // CMENU_H

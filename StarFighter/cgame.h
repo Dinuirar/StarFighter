@@ -17,6 +17,8 @@ private:
     CSettings settings;
     CShip* player;
     CShip* enemy;
+    void initMenu();
+    void initGame();
 public:
     CGame();
     void keyPressEvent(QKeyEvent*);

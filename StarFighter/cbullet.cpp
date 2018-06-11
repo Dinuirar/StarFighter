@@ -1,5 +1,6 @@
 #include "cbullet.h"
 #include "cship.h"
+#include "casteroid.h"
 #include "cspace.h"
 
 CBullet::CBullet() {
@@ -31,23 +32,23 @@ CBullet::CBullet(QPointF POSITION, qreal ANGLE,
 }
 
 void CBullet::move() {
-    std::deque<CObject*> objsInRange;
-    objsInRange = getSpace()->getObjInRange( this, range );
-    for (u_int i = 0; i < objsInRange.size(); i++) {
-        if (objsInRange[i]->getPosition() != this->getPosition()
-         && objsInRange[i]->getPosition() != this->getParent()->getPosition()
-         && !dynamic_cast<CBullet*>(objsInRange[i]) ) {
-            objsInRange[i]->reduceHP( damage );
-            this->removeObject();
-        }
-    }
-
     if (cnt_lifetime > getMaxLife() )
-        this->removeObject();
+        this->setDestroyObject();
     return;
 }
 
-void CBullet::collide(CObject *) {
-    // deal damage to asteroid or
+void CBullet::collide(CObject * obj) {
+    // deal damage to asteroid or ship
+    if ( dynamic_cast<CShip*>( obj ) && this->getParent() != dynamic_cast<CShip*>( obj ) ) { // object is a ship
+        dynamic_cast<CShip*>( obj )->reduceHP( this->getDmgValue() );
+        this->setDestroyObject();
+    }
+    else if ( dynamic_cast<CAsteroid*>( obj ) ) { // object is an asteroid
+        dynamic_cast<CAsteroid*>( obj )->reduceHP( this->getDmgValue()/2 );
+        this->setDestroyObject();
+    }
+    else if ( dynamic_cast<CBullet*>( obj ) ) {
+        return;
+    }
     return;
 }

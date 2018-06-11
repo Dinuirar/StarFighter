@@ -1,6 +1,7 @@
 #include "cship.h"
 #include "cspace.h"
 #include "cbullet.h"
+#include "casteroid.h"
 #include "ggraphics.h"
 #include <cmath>
 
@@ -103,8 +104,14 @@ void CShip::move() {
         if ( !( this->getFuel() <= 0 ) )
             fuel--;
     }
-    // std::deque<CObject*> list = getSpace()->getObjInRange(this);
     // jesli statek jest autonomiczny - podejmij decyzje na podstawie obiektow w zasiegu
+//    if ( this->getID() == NPC ) {
+//      checkLineOfSight();
+//        for ( u_int i = 0; i < objs.size(); i++) {
+
+//        }
+
+//    }
     return;
 }
 
@@ -128,10 +135,39 @@ void CShip::setAttackCost(int _c) {
     attack_cost = _c;
 }
 
-void CShip::collide(CObject *) {
-    // do nothing with bullet
-    // bounce from the asteroid
+CObject *CShip::checkLineOfSight(qreal& distance) {
+//    std::deque<CObject*> line = this->getSpace()->getObjInRange(this, 250);
+//    std::vector<qreal> distances;
+//    for (u_int i = 0; i < line.size(); i++) {
+//        if ( dynamic_cast<CObject*>(this) != line[i] )
+//            distances.push_back( -1 );
+//        distances.push_back( this->calcDistance(line[i]) );
+//    }
+//    distance = distances[0];
+//    int close_index = 0;
+//    for ( u_int i = 0; i < line.size(); i++ ) {
+//        if ( distances[i] < distance ) {
+//            distance = distances[i];
+//            close_index = i;
+//        }
+//    }
+//    return line[close_index];
+}
+
+void CShip::collide(CObject * obj) {
+    // do nothing with a bullet
+    if ( dynamic_cast<CBullet*>( obj ) ) {
+        return;
+    }
     // bounce from the other ship
+    else if ( dynamic_cast<CShip*>( obj ) ) {
+        this->setLinearSpeed( -this->getLinearSpeed()*0.9 );
+    }
+    // bounce from the asteroid
+    else if ( dynamic_cast<CAsteroid*>( obj ) ) {
+        this->setLinearSpeed( -this->getLinearSpeed()*0.9 );
+        this->reduceHP( 25 );
+    }
 }
 
 int CShip::getEnergy() {

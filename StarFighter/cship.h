@@ -5,6 +5,8 @@
 #include "common.h"
 #include <deque>
 
+class CObject;
+
 class CShip : public CObject {
 public:
     CShip();
@@ -17,22 +19,22 @@ public:
          qreal LINEAR_ACC = 30, qreal ANGULAR_ACC = 8,
          int HULL = 100, int SHIELDS = 100, int ENERGY = 100, int FUEL = 1000 );
     ~CShip() {}
+    void move();
     void accelerateAngular(bool isClockwise);
     void accelerateLinear(bool isDecceleration = false);
     void attack();
-    void decreaseHP();
     int getID();
     EWeaponID getWeaponType();
     int getEnergy();
     int getFuel();
-    void move();
 protected:
+    void collide( CObject * );
     void setEnergy(int _e);
     void setFuel(int _f);
     void setWeaponType( EWeaponID _w );
     int getAttackCost();
     void setAttackCost( int _c );
-    void collide( CObject * );
+    CObject* checkLineOfSight( qreal& );
 private:
     EId id;
     EWeaponID weapon;

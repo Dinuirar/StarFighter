@@ -4,30 +4,24 @@
 #include <ctime>
 #include <QTimer>
 
-int signed_rand() {
-    return (rand() - RAND_MAX/2);
+void CGame::initMenu() {
+//        menu = new CMenu(&settings);
+//        this->setScene(menu);
+//        delete menu;
+        menu = NULL;
 }
 
-CGame::CGame() {
-    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    setWindowTitle( QT_TRANSLATE_NOOP(QGraphicsView, "StarFighter - The Game") );
-    setSceneRect( QRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT) );
-    setAlignment( Qt::AlignTop );
-    //    menu = new CMenu(settings);
-    //    this->setScene(menu);
-    //    delete CMenu;
-    menu = NULL;
+void CGame::initGame() {
     space = new CSpace(); // (settings);
     srand(std::time(0));
 
     // add player's ship
-    player = new CShip( 10, LASER, PLAYER, space, QPoint(300, 400) );
+    player = new CShip( 35, LASER, PLAYER, space, QPoint(300, 400) );
     GGraphics* player_g = new GGraphics("../graphics/ship-viper2.png", player, SHIPSCALE);
     space->addObject( player, player_g);
 
     // add enemy's ship
-    enemy = new CShip( 10, PLASMA, NPC, space, QPoint(400, 300) );
+    enemy = new CShip( 35, PLASMA, NPC, space, QPoint(400, 300) );
     GGraphics* enemy_g = new GGraphics("../graphics/ship-raider.png", enemy, SHIPSCALE);
     space->addObject(enemy, enemy_g);
 
@@ -64,6 +58,17 @@ CGame::CGame() {
     timer->start(1000 / 33);
 
     this->setScene(space);
+}
+
+CGame::CGame() {
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setWindowTitle( QT_TRANSLATE_NOOP(QGraphicsView, "StarFighter - The Game") );
+    setSceneRect( QRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT) );
+    setAlignment( Qt::AlignTop );
+
+    this->initMenu();
+    this->initGame();
 }
 
 void CGame::keyPressEvent(QKeyEvent * event) {

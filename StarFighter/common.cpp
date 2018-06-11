@@ -24,3 +24,7 @@ qreal deg2rad( qreal deg ) {
 qreal rad2deg( qreal rad ) {
     return rad * 57.32;
 }
+
+int signed_rand() {
+   return (rand() - RAND_MAX/2);
+}

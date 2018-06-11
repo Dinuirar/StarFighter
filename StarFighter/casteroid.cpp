@@ -1,14 +1,8 @@
 #include "casteroid.h"
+#include "cbullet.h"
+#include "cship.h"
 
 CAsteroid::CAsteroid() {
-}
-
-CAsteroid::CAsteroid( int ID,
-          qreal X, qreal Y, qreal ANGLE,
-          qreal LINEAR_SPEEDX, qreal LINEAR_SPEEDY, qreal ANGULAR_SPEED,
-          int HP )
-    : id(ID),
-      CObject(X, Y, ANGLE, LINEAR_SPEEDX, LINEAR_SPEEDY, ANGULAR_SPEED) {
 }
 
 CAsteroid::CAsteroid( qreal SIZE, CSpace * SPACE,
@@ -21,24 +15,22 @@ CAsteroid::CAsteroid( qreal SIZE, CSpace * SPACE,
     this->setHP(HP);
 }
 
-void CAsteroid::setModel(QString arg) {
-
-}
-
-bool CAsteroid::takeAHit(int dmg) {
-    return true;
-}
-
-void CAsteroid::update() {
-
-}
-
 void CAsteroid::move() {
-
 }
 
-void CAsteroid::collide(CObject *) {
+void CAsteroid::collide(CObject * obj) {
     // do nothing with bullet
-    // do nothing with ship
+    if ( dynamic_cast<CBullet*>( obj ) ) {
+        return;
+    }
+    // take some of the ship's speed
+    else if ( dynamic_cast<CShip*>( obj ) ) {
+        this->setLinearSpeed( -this->getLinearSpeed() + 0.1*dynamic_cast<CShip*>( obj )->getLinearSpeed() );
+        dynamic_cast<CShip*>( obj )->reduceHP( 25 );
+    }
     // bounce from the other asteroid
+    else if ( dynamic_cast<CAsteroid*>( obj ) ) {
+        this->setLinearSpeed( -this->getLinearSpeed() );
+    }
+    return;
 }

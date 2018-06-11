@@ -49,8 +49,8 @@ CSpace::CSpace() {
 std::deque<CObject*> CSpace::getObjInRange(CObject *_obj, qreal _range) {
     std::deque<CObject*> objInRange;
     for (u_int i = 0; i < FListObj.size(); i++) {
-        if( dynamic_cast<CBullet*>(FListObj[i]) != NULL )
-            continue;
+        //if( dynamic_cast<CBullet*>(FListObj[i]) != NULL )
+        //    continue;
         if( _obj->calcDistance(FListObj[i]) <= _range + FListObj[i]->getSize() )
             objInRange.push_back(FListObj[i]);
     }
@@ -76,7 +76,6 @@ void CSpace::addObject(CObject * _obj, GGraphics * _graphic) {
 }
 
 void CSpace::removeObject( u_int index ) {
-//    QGraphicsItem* _item = this->itemAt( FListObj[index]->getPosition(), QTransform() );
     QGraphicsItem* _item = FListGraphics[index];
     if ( _item )
         removeItem(_item);
@@ -94,6 +93,7 @@ void CSpace::removeObject( u_int index ) {
         __iposition++;
     }
     delete FListObj[index];
+//    FListGraphics[index]->setObject( NULL );
     delete FListGraphics[index];
     FListObj.erase(_iposition);
     FListGraphics.erase(__iposition);
