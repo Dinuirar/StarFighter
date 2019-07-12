@@ -1,7 +1,8 @@
 #include <QString>
+#include "common.h"
 
 u_int WINDOW_WIDTH = 800;
-u_int WINDOW_HEIGHT = 500;
+u_int WINDOW_HEIGHT = 600;
 QString SPACE_BACKGROUND = "../graphics/background-beta-black.png";
 const QString laserName = "laser.png";
 const QString plasmaName = "plasma.png";

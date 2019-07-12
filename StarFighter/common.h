@@ -2,6 +2,10 @@
 #define COMMON_H
 
 #include <QString>
+// #include <QtMath>
+#include <cmath>
+
+typedef uint u_int;
 
 extern u_int WINDOW_WIDTH;
 extern u_int WINDOW_HEIGHT;

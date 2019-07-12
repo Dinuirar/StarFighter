@@ -2,6 +2,7 @@
 #include "cship.h"
 #include "casteroid.h"
 #include "cspace.h"
+#include "common.h"
 
 CBullet::CBullet() {
 }
@@ -28,7 +29,7 @@ CBullet::CBullet(QPointF POSITION, qreal ANGLE,
         lin_speed = 80;
     }
     ANGLE = 3.14/2 - deg2rad(ANGLE);
-    this->setLinearSpeed( QPointF( lin_speed*cos( ANGLE ), -lin_speed*sin( ANGLE ) ) );
+    this->setLinearSpeed( QPointF( lin_speed * cos( ANGLE ), -lin_speed * sin( ANGLE ) ) );
 }
 
 void CBullet::move() {
