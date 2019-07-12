@@ -5,38 +5,29 @@
 #include <QTimer>
 
 void CGame::initMenu() {
-//        menu = new CMenu(&settings);
-//        this->setScene(menu);
-//        delete menu;
-        menu = NULL;
+        menu = nullptr;
 }
 
 void CGame::initGame() {
-    space = new CSpace(); // (settings);
-    srand(std::time(0));
+    space = new CSpace();
 
     // add player's ship
     player = new CShip( 35, LASER, PLAYER, space, QPoint(300, 400) );
-    GGraphics* player_g = new GGraphics("../graphics/ship-viper2.png", player, SHIPSCALE);
+    GGraphics* player_g = new GGraphics(ship_graphics, player, SHIPSCALE);
     space->addObject( player, player_g);
-
-    // add enemy's ship
-    enemy = new CShip( 35, PLASMA, NPC, space, QPoint(400, 300) );
-    GGraphics* enemy_g = new GGraphics("../graphics/ship-raider.png", enemy, SHIPSCALE);
-    space->addObject(enemy, enemy_g);
 
     // add some asteroids to FListObj
     double randomspeedlinearX, randomspeedlinearY, randomspeedangular;
     qreal randomscale;
     for ( u_int i = 0; i < HOWMANYASTEROIDS; i++ ) {
-        randomscale = 0.6 * (double( rand() ) / 2 / RAND_MAX) + 0.2;
-        randomspeedlinearX = signed_rand() %11;
-        randomspeedlinearY = signed_rand()%11;
-        randomspeedangular = signed_rand()%5;
+        randomscale = 0.5;
+        randomspeedlinearX = 0;
+        randomspeedlinearY = 0;
+        randomspeedangular = 0;
         CAsteroid * tmp = new CAsteroid( randomscale * 100, space,
-                    rand()%WINDOW_WIDTH, rand()%WINDOW_HEIGHT, signed_rand()%360,
+                    i * 100 + 50, 2 * 100, 0,
                     randomspeedlinearX, randomspeedlinearY, randomspeedangular, 50);
-        GGraphics * tmp_g = new GGraphics( "../graphics/" + asteroids[ rand()%4 ], tmp );
+        GGraphics * tmp_g = new GGraphics( graphics_dir + asteroids[ 0 ], tmp );
         tmp_g->setScale( randomscale );
         space->addObject( tmp, tmp_g );
     }
@@ -64,7 +55,10 @@ CGame::CGame() {
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setWindowTitle( QT_TRANSLATE_NOOP(QGraphicsView, "StarFighter - The Game") );
-    setSceneRect( QRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT) );
+    setSceneRect( QRect(0, 0,
+                        static_cast<int>(WINDOW_WIDTH),
+                        static_cast<int>(WINDOW_HEIGHT))
+                  );
     setAlignment( Qt::AlignTop );
 
     this->initMenu();
@@ -72,17 +66,8 @@ CGame::CGame() {
 }
 
 void CGame::keyPressEvent(QKeyEvent * event) {
-    if( menu ) return; // mode -> menu
+    if( menu ) { return; } // mode -> menu
     else { // mode -> space
-//        CShip* ship;
-//        for (size_t i = 0; i < space->FListObj.size(); i++) { // find player's ship
-//            ship = dynamic_cast<CShip*>( space->FListObj[i] ); // try to cast object to ship
-//            if ( !ship ) continue; // if object is not a ship - continue to the next element
-//            if (ship->getID() != PLAYER) continue; // if ship is not a PLAYER - continue to the next element
-//            else {
-//                break; // if object is of class CShip and id is PLAYER, than the player's ship has been found
-//            }
-//        }
         if( event->key() == Qt::Key_Up) {
             player->accelerateLinear();
         }
@@ -95,27 +80,9 @@ void CGame::keyPressEvent(QKeyEvent * event) {
         else if ( event->key() == Qt::Key_Right ) {
             player->accelerateAngular(true);
         }
-        else if ( event->key() == Qt::Key_0  ) {
+        else if ( event->key() == Qt::Key_Space  ) {
             player->attack();
         }
-
-        if( event->key() == Qt::Key_W) {
-            enemy->accelerateLinear();
-        }
-        else if( event->key() == Qt::Key_S) {
-            enemy->accelerateLinear(true);
-        }
-        else if ( event->key() == Qt::Key_A ) {
-            enemy->accelerateAngular(false);
-        }
-        else if ( event->key() == Qt::Key_D ) {
-            enemy->accelerateAngular(true);
-        }
-        else if ( event->key() == Qt::Key_Space ) {
-            enemy->attack();
-        }
-
-
         else if (event->key() == Qt::Key_Escape) {
             delete this;
         }

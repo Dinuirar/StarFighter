@@ -2,20 +2,19 @@
 #define COMMON_H
 
 #include <QString>
-// #include <QtMath>
 #include <cmath>
 
 typedef uint u_int;
 
 extern u_int WINDOW_WIDTH;
 extern u_int WINDOW_HEIGHT;
-extern QString SPACE_BACKGROUND;
+extern const QString graphics_dir;
+extern const QString ship_graphics;
+extern const QString SPACE_BACKGROUND;
 extern const QString laserName;
 extern const QString plasmaName;
 extern const QString kineticName;
 extern qreal dt;
-//extern int MAX_LIN_SPEED_SQR;
-//extern int MAX_ANG_SPEED;
 extern qreal SHIPSCALE;
 extern u_int HOWMANYASTEROIDS;
 extern QString destroyedMessage;
@@ -35,8 +34,8 @@ int signed_rand();
 class CSettings {
 public:
     EDifficulty FDifficulty;
+    // ship's type, weapon's type
     EWeaponID player_weapon, enemy_weapon;
-    // typ statku, typ uzbrojenia
 };
 
 #endif // COMMON_H
